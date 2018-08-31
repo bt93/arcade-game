@@ -37,16 +37,31 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-Player.prototype.handleInput = function() {
-    // handle input
+Player.prototype.handleInput = function(key) {
+    // Moves the player if any of the keys are pressed
+    if (key === 'left') {
+        this.x -= 101;
+    }
+
+    if (key === 'right') {
+        this.x += 101; 
+    }
+
+    if (key === 'up') {
+        this.y -= 89;
+    }
+
+    if (key === 'down') {
+        this.y += 89;
+    }
 } 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let allEnemies = ['images/enemy-bug.png', 'images/enemy-bug.png','images/enemy-bug.png','images/enemy-bug.png'];
-let player = 'images/char-boy.png'
+let allEnemies = [];
+let player = new Player(202,400)
 
-
+let enemy1 = new Enemy(450,500,2);
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
