@@ -1,3 +1,5 @@
+/* Enemies */
+
 // Enemies our player must avoid
 let Enemy = function(x,y,speed) {
     this.x = x;
@@ -20,9 +22,8 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/* Player */
+
 let Player = function(x,y) {
     this.x = x;
     this.y = y;
@@ -30,7 +31,10 @@ let Player = function(x,y) {
 } 
 
 Player.prototype.update = function(dt) {
-    this.y * dt; 
+    if (this.y < 0) {
+        this.x = 202;
+        this.y = 400;
+    } 
 }
 
 Player.prototype.render = function() {
@@ -39,19 +43,19 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(key) {
     // Moves the player if any of the keys are pressed
-    if (key === 'left') {
+    if (key === 'left' && this.x > 0) {
         this.x -= 101;
     }
 
-    if (key === 'right') {
+    if (key === 'right' && this.x < 400) {
         this.x += 101; 
     }
 
-    if (key === 'up') {
+    if (key === 'up' && this.y > 35) {
         this.y -= 89;
     }
 
-    if (key === 'down') {
+    if (key === 'down' && this.y < 400) {
         this.y += 89;
     }
 } 
@@ -61,7 +65,8 @@ Player.prototype.handleInput = function(key) {
 let allEnemies = [];
 let player = new Player(202,400)
 
-let enemy1 = new Enemy(450,500,2);
+let enemy1 = new Enemy(220,400, 0);
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
