@@ -112,6 +112,7 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// Initiates 5 lives
 function initLives() {
     let lives = $('.lives');
     for (let i = 0; i < 5; i++) {
@@ -120,6 +121,7 @@ function initLives() {
 }
 initLives()
 
+// Restarts the score panel back to original state
 function gameOver() {
     score = 0;
     $('.score').html(score);
