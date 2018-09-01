@@ -9,8 +9,8 @@ A arcade game based off the video game "Frogger" for Udacity's Front-End Web Dev
 
 ##Screenshots
 
-[screenshot 1](images/Screenshot-1.png)
-[screenshot 2](images/Screenshot-2.png)
+![screenshot 1](images/Screenshot-1.png)
+![screenshot 2](images/Screenshot-2.png)
 ##Made with
 
 HTML
