@@ -1,3 +1,6 @@
+// Creates init lives to easily access
+let lives = 5;
+let score = 0;
 /* Enemies */
 
 // Enemies our player must avoid
@@ -17,18 +20,23 @@ Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
     // Resets the enemies when they reach the end of canvas
     if (this.x > 550) {
-        this.x = -100;
-        this.speed = Math.random() * (310 - 50) + 100;
+        this.x = Math.random() * (-310 - -100) + -100;
+        this.speed = Math.random() * (310 - 50) + 50;
     }
 
     // Checks if the player and an ememy touch and 
-    // creates failstate
+    // creates failstate if they do
     if (player.x < this.x + 60 &&
         player.x + 36 > this.x &&
         player.y < this.y + 25 &&
         player.y + 30 > this.y) {
         player.x = 202;
         player.y = 400;
+        let loseLife = $('.show').last().toggleClass('show hide');
+        lives -= 1;
+        if (lives < 1) {
+            gameOver();
+        }
     }
 };
 
@@ -38,26 +46,29 @@ Enemy.prototype.render = function() {
 };
 
 /* Player */
-
+// Constructor function for player
 let Player = function(x,y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/char-boy.png'
 } 
-
+// Resets player to begining if they reach water
 Player.prototype.update = function(dt) {
     if (this.y < 0) {
         this.x = 202;
         this.y = 400;
+        score += 1;
+        $('.score').html(score);
     } 
 }
-
+// Draw player on screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 Player.prototype.handleInput = function(key) {
     // Moves the player if any of the keys are pressed
+    // Also creates boundries for player
     if (key === 'left' && this.x > 0) {
         this.x -= 101;
     }
@@ -75,13 +86,13 @@ Player.prototype.handleInput = function(key) {
     }
 } 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Instantiate objects.
+// All enemy objects go in an array called allEnemies
+// The player object goes in a variable called player
 let allEnemies = [];
-let enemy1 = new Enemy(-100,220,Math.random() * (310 - 100) + 50);
-let enemy2 = new Enemy(-100,130,Math.random() * (310 - 100) + 50);
-let enemy3 = new Enemy(-100,55,Math.random() * (310 - 100) + 50);
+let enemy1 = new Enemy(-300,220,Math.random() * (310 - 50) + 50);
+let enemy2 = new Enemy(-500,130,Math.random() * (310 - 50) + 50);
+let enemy3 = new Enemy(-310,55,Math.random() * (310 - 50) + 50);
 allEnemies.push(enemy1);
 allEnemies.push(enemy2);
 allEnemies.push(enemy3);
@@ -101,3 +112,19 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function initLives() {
+    let lives = $('.lives');
+    for (let i = 0; i < 5; i++) {
+        lives.append('<img src="images/Heart.png" class="show">');
+    }
+}
+initLives()
+
+function gameOver() {
+    score = 0;
+    $('.score').html(score);
+    $('.lives').html('');
+    initLives();
+    lives = 5;
+}
