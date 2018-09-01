@@ -1,6 +1,7 @@
 // Creates init lives to easily access
 let lives = 5;
 let score = 0;
+let scoreHTML = $('.score');
 /* Enemies */
 
 // Enemies our player must avoid
@@ -30,8 +31,7 @@ Enemy.prototype.update = function(dt) {
         player.x + 36 > this.x &&
         player.y < this.y + 25 &&
         player.y + 30 > this.y) {
-        player.x = 202;
-        player.y = 400;
+        player.reset();
         let loseLife = $('.show').last().toggleClass('show hide');
         lives -= 1;
         if (lives < 1) {
@@ -50,15 +50,19 @@ Enemy.prototype.render = function() {
 let Player = function(x,y) {
     this.x = x;
     this.y = y;
-    this.sprite = 'images/char-boy.png'
-} 
+    this.sprite = 'images/char-boy.png';
+
+    this.reset = function () {
+        this.x = 202;
+        this.y = 400;
+    }
+}
 // Resets player to begining if they reach water
 Player.prototype.update = function(dt) {
     if (this.y < 0) {
-        this.x = 202;
-        this.y = 400;
+        player.reset();
         score += 1;
-        $('.score').html(score);
+        scoreHTML.html(score);
     } 
 }
 // Draw player on screen
@@ -89,12 +93,10 @@ Player.prototype.handleInput = function(key) {
 // Instantiate objects.
 // All enemy objects go in an array called allEnemies
 // The player object goes in a variable called player
-let enemy1 = new Enemy(-300,220,Math.random() * (310 - 50) + 50);
-let enemy2 = new Enemy(-500,130,Math.random() * (310 - 50) + 50);
-let enemy3 = new Enemy(-310,55,Math.random() * (310 - 50) + 50);
-let enemy4 = new Enemy(-310,300,Math.random() * (310 - 50) + 50);
-
-let allEnemies = [enemy1,enemy2,enemy3,enemy4];
+let allEnemies = [new Enemy(-300,220,Math.random() * (310 - 50) + 50),
+                  new Enemy(-500,130,Math.random() * (310 - 50) + 50),
+                  new Enemy(-310,55,Math.random() * (310 - 50) + 50),
+                  new Enemy(-310,300,Math.random() * (310 - 50) + 50)]
 
 let player = new Player(202,400)
 
@@ -124,7 +126,7 @@ initLives()
 // Restarts the score panel back to original state
 function gameOver() {
     score = 0;
-    $('.score').html(score);
+    scoreHTML.html(score);
     $('.lives').html('');
     initLives();
     lives = 5;
