@@ -8,13 +8,28 @@ let Enemy = function(x,y,speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
+// Update the enemy's position
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
+    // Multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
+    // Resets the enemies when they reach the end of canvas
+    if (this.x > 550) {
+        this.x = -100;
+        this.speed = Math.random() * (310 - 50) + 100;
+    }
+
+    // Checks if the player and an ememy touch and 
+    // creates failstate
+    if (player.x < this.x + 60 &&
+        player.x + 36 > this.x &&
+        player.y < this.y + 25 &&
+        player.y + 30 > this.y) {
+        player.x = 202;
+        player.y = 400;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -59,16 +74,23 @@ Player.prototype.handleInput = function(key) {
         this.y += 89;
     }
 } 
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 let allEnemies = [];
+let enemy1 = new Enemy(-100,220,Math.random() * (310 - 100) + 50);
+let enemy2 = new Enemy(-100,130,Math.random() * (310 - 100) + 50);
+let enemy3 = new Enemy(-100,55,Math.random() * (310 - 100) + 50);
+allEnemies.push(enemy1);
+allEnemies.push(enemy2);
+allEnemies.push(enemy3);
+
 let player = new Player(202,400)
 
-let enemy1 = new Enemy(220,400, 0);
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// This listens for key presses and sends the keys to
+// Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
